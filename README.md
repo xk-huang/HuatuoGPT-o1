@@ -102,7 +102,7 @@ accelerate launch --config_file ./configs/deepspeed_zero3.yaml \
 
 - **RL in stage 2**
 
-We provide a simple PPO script using the [trl](https://github.com/huggingface/trl) library. Below is an example for training an 8B model with PPO on an 8-GPU A100 machine. Ensure you first download our [medical verifier](https://huggingface.co/FreedomIntelligence/verifier-o1-3B) as the reward model.
+We provide a simple PPO script using the [trl](https://github.com/huggingface/trl) library. Below is an example for training an 8B model with PPO on an 8-GPU A100 machine. Ensure you first download our [medical verifier](https://huggingface.co/FreedomIntelligence/medical_o1_verifier_3B) as the reward model.
 
 ```bash
 accelerate launch \
@@ -112,7 +112,7 @@ accelerate launch \
     --config_file ./configs/deepspeed_zero3.yaml \
 	--deepspeed_multinode_launcher standard RL_stage2.py \
     --model_name_or_path [FreedomIntelligence/HuatuoGPT-o1-8B] \
-    --reward_model_path [FreedomIntelligence/medical-verifier-o1-3B] \
+    --reward_model_path [FreedomIntelligence/medical_o1_verifier_3B] \
     --value_model_path [meta-llama/Llama-3.2-3B-Instruct] \
     --dataset_name  [FreedomIntelligence/medical-o1-verifiable-problem]\
     --response_length 1300 \
