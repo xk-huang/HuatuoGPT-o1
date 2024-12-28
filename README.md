@@ -6,7 +6,7 @@
 </div>
 
 <p align="center">
-📃 <a href="assets/paper.pdf" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPTo1-7B" target="_blank">HuatuoGPT-o1-7B</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-8B" target="_blank">HuatuoGPT-o1-8B</a> ｜ 🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-70B" target="_blank">HuatuoGPT-o1-70B</a>  | 📚 <a href="https://huggingface.co/datasets/FreedomIntelligence/PubMedVision" target="_blank">Data</a>
+📃 <a href="assets/paper.pdf" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPTo1-7B" target="_blank">HuatuoGPT-o1-7B</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-8B" target="_blank">HuatuoGPT-o1-8B</a> ｜ 🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-70B" target="_blank">HuatuoGPT-o1-70B</a>  | 📚 <a href="https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT" target="_blank">Data</a>
 </p>
 
 
@@ -26,7 +26,7 @@ Hello! Welcome to the repository for [HuatuoGPT-o1](assets/paper.pdf)!
 We open-sourced our models, data, and code here.
 
 ## 👨‍⚕️ Model
-- Model Access
+- **Model Access**
 
 |                      | Backbone     | Supported Languages | Link                                                                  |
 | -------------------- | ------------ | ----- | --------------------------------------------------------------------- |
@@ -35,7 +35,8 @@ We open-sourced our models, data, and code here.
 | **HuatuoGPT-o1-7B**  | Qwen2.5-7B   | English & Chinese | [HF Link](https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-7B) |
 | **HuatuoGPT-o1-72B** | Qwen2.5-72B  | English & Chinese | [HF Link](https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-72B) |
 
-- Deploy
+- **Deploy**
+
 HuatuoGPT-o1 can be used just like `Llama-3.1-8B-Instruct`. You can deploy it with tools like [vllm](https://github.com/vllm-project/vllm) or [Sglang](https://github.com/sgl-project/sglang),  or perform direct inference:
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -70,7 +71,7 @@ HuatuoGPT-o1 adopts a *thinks-before-it-answers* approach, with outputs formatte
 | Medical Verifiable Problems | Open-ended medical problems sourced from challenging medical exams,  paired with ground-truth answers. | [Link](https://huggingface.co/datasets/FreedomIntelligence/medical-o1-verifiable-problem)  |
 | SFT Data in Stage 1        | Fine-tuning data generated using GPT-4o, including complex chains of thought (**Complex CoT**) and output (**Response**). | [Link](https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT)       |
 
-- **数据构建**
+- **Data Construction**
 
 We provide scripts to construct verifiable problems and searching reasoning paths.
 
@@ -100,7 +101,7 @@ accelerate launch --config_file ./configs/deepspeed_zero3.yaml \
     --data_path [FreedomIntelligence/medical-o1-reasoning-SFT] 
 ```
 
-- **RL in stage 2**
+- **Stage 2: Reinforcement Learning (RL)**
 
 We provide a simple PPO script using the [trl](https://github.com/huggingface/trl) library. Below is an example for training an 8B model with PPO on an 8-GPU A100 machine. Ensure you first download our [medical verifier](https://huggingface.co/FreedomIntelligence/medical_o1_verifier_3B) as the reward model.
 
