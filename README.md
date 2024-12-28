@@ -4,9 +4,8 @@
   HuatuoGPT-o1
 </h3>
 </div>
+
 <p align="center">
-
-
 📃 <a href="https://arxiv.org/abs/2311.09774" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPTo1-7B" target="_blank">HuatuoGPT-o1-7B</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-8B" target="_blank">HuatuoGPT-o1-8B</a> ｜ 🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-70B" target="_blank">HuatuoGPT-o1-70B</a>  | 📚 <a href="https://huggingface.co/datasets/FreedomIntelligence/PubMedVision" target="_blank">Data</a>
 </p>
 
@@ -67,7 +66,7 @@ HuatuoGPT-o1 adopts a *thinks-before-it-answers* approach, with outputs formatte
 - **Data Access**
 
 | Data                  | Description                                                                                   | Link                                                                                           |
-| -------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| -------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | Medical Verifiable Problems | Open-ended medical problems sourced from challenging medical exams,  paired with ground-truth answers. | [HF Link](https://huggingface.co/datasets/FreedomIntelligence/medical-o1-verifiable-problem)  |
 | SFT Data in Stage 1        | Fine-tuning data generated using GPT-4o, including complex chains of thought (**Complex CoT**) and output (**Response**). | [HF Link](https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT)       |
 
