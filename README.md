@@ -6,15 +6,15 @@
 </div>
 
 <p align="center">
-📃 <a href="https://arxiv.org/abs/2311.09774" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPTo1-7B" target="_blank">HuatuoGPT-o1-7B</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-8B" target="_blank">HuatuoGPT-o1-8B</a> ｜ 🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-70B" target="_blank">HuatuoGPT-o1-70B</a>  | 📚 <a href="https://huggingface.co/datasets/FreedomIntelligence/PubMedVision" target="_blank">Data</a>
+📃 <a href="assets/paper.pdf" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPTo1-7B" target="_blank">HuatuoGPT-o1-7B</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-8B" target="_blank">HuatuoGPT-o1-8B</a> ｜ 🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-70B" target="_blank">HuatuoGPT-o1-70B</a>  | 📚 <a href="https://huggingface.co/datasets/FreedomIntelligence/PubMedVision" target="_blank">Data</a>
 </p>
 
 
 ## ⚡ Introduction
-Hello! Welcome to the repository for [HuatuoGPT-o1](https://arxiv.org/abs/2311.09774)!
+Hello! Welcome to the repository for [HuatuoGPT-o1](assets/paper.pdf)!
 
 <div align=center>
-<img src="assets/pic1.jpg"  width = "90%" alt="HuatuoGPT2" align=center/>
+<img src="assets/pic1.jpg"  width = "90%" alt="HuatuoGPT-o1" align=center/>
 </div>
 
 
@@ -67,8 +67,8 @@ HuatuoGPT-o1 adopts a *thinks-before-it-answers* approach, with outputs formatte
 
 | Data                  | Description                                                                                   | Link                                                                                           |
 | -------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Medical Verifiable Problems | Open-ended medical problems sourced from challenging medical exams,  paired with ground-truth answers. | [HF Link](https://huggingface.co/datasets/FreedomIntelligence/medical-o1-verifiable-problem)  |
-| SFT Data in Stage 1        | Fine-tuning data generated using GPT-4o, including complex chains of thought (**Complex CoT**) and output (**Response**). | [HF Link](https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT)       |
+| Medical Verifiable Problems | Open-ended medical problems sourced from challenging medical exams,  paired with ground-truth answers. | [Link](https://huggingface.co/datasets/FreedomIntelligence/medical-o1-verifiable-problem)  |
+| SFT Data in Stage 1        | Fine-tuning data generated using GPT-4o, including complex chains of thought (**Complex CoT**) and output (**Response**). | [Link](https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT)       |
 
 - **数据构建**
 
@@ -151,13 +151,9 @@ Explore our HuatuoGPT series:
 
 ## 📖 Citation
 ```
-@misc{chen2024huatuogptvisioninjectingmedicalvisual,
-      title={HuatuoGPT-Vision, Towards Injecting Medical Visual Knowledge into Multimodal LLMs at Scale}, 
-      author={Junying Chen and Ruyi Ouyang and Anningzhe Gao and Shunian Chen and Guiming Hardy Chen and Xidong Wang and Ruifei Zhang and Zhenyang Cai and Ke Ji and Guangjun Yu and Xiang Wan and Benyou Wang},
-      year={2024},
-      eprint={2406.19280},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2406.19280}, 
+@misc{chen2024huatuogpto1,
+      title={HuatuoGPT-o1, Towards Medical Complex Reasoning with LLMs}, 
+      author={Junying Chen and Zhenyang Cai and Ke Ji and Xidong Wang and Wanlong Liu1 and Rongsheng Wang and Jianye Hou and Benyou Wang},
+      year={2024}
 }
 ```
