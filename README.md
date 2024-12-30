@@ -6,12 +6,12 @@
 </div>
 
 <p align="center">
-📃 <a href="assets/paper.pdf" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-7B" target="_blank">HuatuoGPT-o1-7B</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-8B" target="_blank">HuatuoGPT-o1-8B</a> ｜ 🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-70B" target="_blank">HuatuoGPT-o1-70B</a>  | 📚 <a href="https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT" target="_blank">Data</a>
+📃 <a href="https://arxiv.org/pdf/2412.18925" target="_blank">Paper</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-7B" target="_blank">HuatuoGPT-o1-7B</a> ｜🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-8B" target="_blank">HuatuoGPT-o1-8B</a> ｜ 🤗 <a href="https://huggingface.co/FreedomIntelligence/HuatuoGPT-o1-70B" target="_blank">HuatuoGPT-o1-70B</a>  | 📚 <a href="https://huggingface.co/datasets/FreedomIntelligence/medical-o1-reasoning-SFT" target="_blank">Data</a>
 </p>
 
 
 ## ⚡ Introduction
-Hello! Welcome to the repository for [HuatuoGPT-o1](assets/paper.pdf)!
+Hello! Welcome to the repository for [HuatuoGPT-o1](https://arxiv.org/pdf/2412.18925)!
 
 <div align=center>
 <img src="assets/pic1.jpg"  width = "90%" alt="HuatuoGPT-o1" align=center/>
@@ -152,9 +152,13 @@ Explore our HuatuoGPT series:
 
 ## 📖 Citation
 ```
-@misc{chen2024huatuogpto1,
+@misc{chen2024huatuogpto1medicalcomplexreasoning,
       title={HuatuoGPT-o1, Towards Medical Complex Reasoning with LLMs}, 
-      author={Junying Chen and Zhenyang Cai and Ke Ji and Xidong Wang and Wanlong Liu1 and Rongsheng Wang and Jianye Hou and Benyou Wang},
-      year={2024}
+      author={Junying Chen and Zhenyang Cai and Ke Ji and Xidong Wang and Wanlong Liu and Rongsheng Wang and Jianye Hou and Benyou Wang},
+      year={2024},
+      eprint={2412.18925},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2412.18925}, 
 }
 ```
