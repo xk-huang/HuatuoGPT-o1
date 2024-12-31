@@ -80,7 +80,7 @@ INVALID_LOGPROB = 1.0
 # for o1
 accumulate_rewards = []
 
-# 采用我们自己的get_reward
+# Using our get_reward
 def get_reward_o1(
     model, response_ids, tokenizer, reward_tokenizer, pad_token_id, sub_answer,max_length = 4000
 

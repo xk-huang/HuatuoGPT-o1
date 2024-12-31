@@ -75,7 +75,7 @@ HuatuoGPT-o1 adopts a *thinks-before-it-answers* approach, with outputs formatte
 
 We provide scripts to construct verifiable problems and searching reasoning paths.
 
-**1. Constructing Verifiable Problems from multi-choice questions.** 
+**1. Constructing Verifiable Problems from Multi-choice Questions.** 
 ```bash
 python construct_verifiable_medical_problems.py --data_path  data/demo_data.json --filter_data --model_name gpt-4o --api_key [your api key]
 ```
