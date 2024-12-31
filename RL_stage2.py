@@ -1,13 +1,10 @@
-# 增加 flashattention
 import os
-os.environ["WANDB_MODE"] = "offline"
 import warnings
 from dataclasses import dataclass
 import wandb
 import torch
 from datasets import load_dataset,load_from_disk
 from transformers import AutoModelForSequenceClassification, AutoTokenizer,PreTrainedTokenizerBase
-# from configs import H4ArgumentParser
 import json,random
 
 
@@ -20,8 +17,7 @@ from ppo_utils.ppo_config_medo1 import PPOConfig
 from ppo_utils.ppo_trainer_medo1 import PPOTrainer
 
 
-
-import os
+os.environ["WANDB_MODE"] = "offline"
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 
 
