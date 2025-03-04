@@ -14,20 +14,22 @@ conda activate xiaoke-huatuo_gpt_o1
 which python
 # should be `/insomnia001/depts/5sigma/users/xh2689/xiaoke/misc/miniconda/envs/xiaoke-methylformer/bin/python`
 
+pip install --upgrade pip
+pip install uv
+
 # Install pytorch 2.4.0
 # https://pytorch.org/get-started/locally/
 # We use cuda 12.4
 # conda install -y pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia
 # conda install pytorch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0 pytorch-cuda=12.4 -c pytorch -c nvidia
-pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu124
+uv pip install torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu124
 # [BUG] AttributeError: 'PyNcclCommunicator' object has no attribute 'device' https://github.com/vllm-project/vllm/issues/8420
 
-# pip install -r requirements.txt
+uv pip install -r requirements.txt
 # xformer is too low
 
 # https://docs.sglang.ai/start/install.html
-pip install --upgrade pip
-pip install uv
+
 uv pip install "sglang[all]>=0.4.3.post2" --find-links https://flashinfer.ai/whl/cu124/torch2.5/flashinfer-python
 ```
 
