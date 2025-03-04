@@ -4,6 +4,7 @@ import re
 import json
 import difflib
 import os
+from pathlib import Path
 
 def str_similarity(str1, str2):
     seq = difflib.SequenceMatcher(None, str1, str2)
@@ -81,7 +82,7 @@ def score(data,ignore_miss= False):
         if 'source' not in da:
             da['source'] = 'unknown'
         if da['source'] not in res:
-            res[da['source']] = [0,0,0,0]
+            res[da['source']] = [0,0,0,0, [], []]
 
         output = da['output']
         ans,ans_type = match_choice(output,da['options'])
@@ -101,6 +102,9 @@ def score(data,ignore_miss= False):
             res[da['source']][3] += 1
 
         res[da['source']][2] += 1
+
+        res[da['source']][4].append(ans[0])
+        res[da['source']][5].append(ans[0])
 
     for k in res:
         head_match_score = res[k][1] / res[k][2]
@@ -123,8 +127,11 @@ def get_results(res_path):
     print(f"*{os.path.basename(res_path)}*")
     print(json.dumps(res,indent=4))
     # save results
-    with open('result_' + os.path.basename(res_path),'w') as fw:
+    result_path = Path(res_path).with_suffix(".results.json")
+
+    with open(result_path,'w') as fw:
         json.dump(res,fw,ensure_ascii=False,indent=2)
+    print(f"save to {result_path}")
 
 # if __name__ == "__main__":
 #     get_results('output_file_path')

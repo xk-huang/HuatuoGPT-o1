@@ -8,7 +8,7 @@ import json
 from transformers import AutoTokenizer
 from jinja2 import Template
 from scorer import get_results
-
+from pathlib import Path
 
 def postprocess_output(pred):
     pred = pred.replace("</s>", "")
@@ -42,7 +42,23 @@ def main():
     parser.add_argument('--task', type=str,default='api')
     parser.add_argument('--port', type=int, default=30000)
     parser.add_argument('--batch_size', type=int, default=1024)    
+    parser.add_argument("--only_get_results", action="store_true")
+    parser.add_argument("--limit", type=int, default=-1)
+    parser.add_argument("--format", type=str, default="huatuo")
+    parser.add_argument("--output_dir", type=str, default="outputs")
+    parser.add_argument("--force_think", action="store_true")
+    parser.add_argument("--think_str", type=str, default="<im_start>think")
     args = parser.parse_args()
+
+    if args.only_get_results:
+        output_dir = Path(args.output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        task_name = os.path.split(args.model_name)[-1]
+
+        task_name = task_name + os.path.basename(args.eval_file).replace('.json','') + f'_{args.task}' + ('_strict-prompt' if args.strict_prompt else '')
+        save_path = output_dir / f'{task_name}.json'
+        get_results(save_path)
+        return
 
 
     print(f"Using local API server at port {args.port}")
@@ -73,6 +89,8 @@ def main():
                     new_prompts.append(prompt[-args.max_tokens:])
             prompts = new_prompts
 
+        if args.force_think:
+            prompts = [i+args.think_str for i in prompts]
         response = client.completions.create(
             model="default",
             prompt=prompts,
@@ -84,12 +102,27 @@ def main():
 
     input_data = load_file(args.eval_file)
     model = None
+
+    if args.limit > 0:
+        print(f"limit: {args.limit}")
+        input_data = input_data[:args.limit]
  
     final_results = []
-    if args.strict_prompt:
-        query_prompt = "Please answer the following multiple-choice questions. Please answer the following multiple-choice questions, ensuring your response concludes with the correct option in the format: 'The answer is A.'.\n{question}\n{option_str}"
+    if args.format == 'huatuo':
+        if args.strict_prompt:
+            query_prompt = "Please answer the following multiple-choice questions, ensuring your response concludes with the correct option in the format: 'The answer is A.'.\n{question}\n{option_str}"
+        else:
+            query_prompt = "Please answer the following multiple-choice question:\n{question}\n{option_str}"
+    elif args.format == 'box':
+        # https://github.com/open-thoughts/open-thoughts/blob/e3ad6c98b0e03ce7f42e7ee8064ab1c5a59f18cf/open_thoughts/math/reason.py#L16
+        query_prompt = "Please answer the following multiple-choice question:\n{question}\n{option_str}. Return your final response within \\boxed{{}}"
+    elif args.format == 'answer':
+        # https://github.com/openai/simple-evals/blob/0a6e8f62e52bc5ae915f752466be3af596caf392/mgsm_eval.py#L33
+        query_prompt = "Please answer the following multiple-choice question:\n{question}\n{option_str}. Finish with: 'Final Answer: {{answer}}' where [answer] is just the option"
     else:
-        query_prompt = "Please answer the following multiple-choice question:\n{question}\n{option_str}"        
+        raise ValueError(f"unknown query_prompt: {query_prompt}")
+    print(f"query_prompt: {query_prompt}")
+
 
     for idx in tqdm(range(len(input_data) // args.batch_size + 1)):
         batch = input_data[idx*args.batch_size:(idx+1)*args.batch_size]
@@ -117,10 +150,13 @@ def main():
             item["output"] = pred
             final_results.append(item)
 
+    output_dir = Path(args.output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
     task_name = os.path.split(args.model_name)[-1]
 
     task_name = task_name + os.path.basename(args.eval_file).replace('.json','') + f'_{args.task}' + ('_strict-prompt' if args.strict_prompt else '')
-    save_path = f'{task_name}.json'
+    save_path = output_dir / f'{task_name}.json'
+
     with open(save_path,'w') as fw:
         json.dump(final_results,fw,ensure_ascii=False,indent=2)
 
