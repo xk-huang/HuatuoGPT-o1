@@ -1,24 +1,26 @@
 
 log_num=0
-model_name="FreedomIntelligence/HuatuoGPT-o1-8B" # Path to the model you are deploying
+model_name="simplescaling/s1.1-32B" # Path to the model you are deploying
 port=28${log_num}35
 # CUDA_VISIBLE_DEVICES=9
 # --dp 1
-python -m sglang.launch_server --model-path $model_name --port $port --mem-fraction-static 0.8 --dp 8 --tp 1 > sglang${log_num}.log 2>&1 &
+python -m sglang.launch_server --model-path $model_name --port $port --mem-fraction-static 0.8 --dp 2 --tp 4 \
+# > sglang${log_num}.log 2>&1 &
 
 exit
 
 
-output_dir=outputs/250304-format/
+output_dir=outputs/250304-format-limit_10/s1_1_32b
 log_num=0
-model_name="FreedomIntelligence/HuatuoGPT-o1-8B" # Path to the model you are deploying
+model_name="simplescaling/s1.1-32B" # Path to the model you are deploying
 port=28${log_num}35
 python evaluation/eval.py --model_name $model_name \
 --eval_file evaluation/data/eval_data.json \
 --port $port \
 --limit=10 \
 --format=huatuo \
---output_dir=$output_dir/HuatuoGPT-o1-8B-huatuo
+--force_think \
+--output_dir=$output_dir/huatuo
 
 python evaluation/eval.py --model_name $model_name \
 --eval_file evaluation/data/eval_data.json \
@@ -26,7 +28,8 @@ python evaluation/eval.py --model_name $model_name \
 --limit=10 \
 --format=huatuo \
 --strict_prompt \
---output_dir=$output_dir/HuatuoGPT-o1-8B-huatuo-strict
+--force_think \
+--output_dir=$output_dir/huatuo-strict
 
 for format in "box" "answer"; do
 python evaluation/eval.py --model_name $model_name \
@@ -34,10 +37,10 @@ python evaluation/eval.py --model_name $model_name \
 --port $port \
 --limit=10 \
 --format=$format \
---output_dir=$output_dir/HuatuoGPT-o1-8B-$format
+--force_think \
+--output_dir=$output_dir/$format
 done
 
-# --strict_prompt
-
+exit
 
 bash evaluation/kill_sglang_server.sh

@@ -29,25 +29,30 @@ def load_file(input_fp):
     return input_data
 
 
+
 def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_name', type=str,
                         default="meta-llama/Llama-2-7b-chat-hf")
     parser.add_argument('--eval_file', type=str, required=True)
-    parser.add_argument('--max_new_tokens', type=int, default=2000)
+    parser.add_argument('--max_new_tokens', type=int, default=4096)
     parser.add_argument('--max_tokens', type=int, default=-1)
     parser.add_argument('--use_chat_template',type=bool, default=True)
     parser.add_argument('--strict_prompt', action="store_true")
     parser.add_argument('--task', type=str,default='api')
     parser.add_argument('--port', type=int, default=30000)
-    parser.add_argument('--batch_size', type=int, default=1024)    
+    parser.add_argument('--batch_size', type=int, default=16)    
     parser.add_argument("--only_get_results", action="store_true")
     parser.add_argument("--limit", type=int, default=-1)
     parser.add_argument("--format", type=str, default="huatuo")
     parser.add_argument("--output_dir", type=str, default="outputs")
     parser.add_argument("--force_think", action="store_true")
-    parser.add_argument("--think_str", type=str, default="<im_start>think")
+    parser.add_argument("--think_str", type=str, default="<|im_start|>think")
+    parser.add_argument("--answer_str", type=str, default="<|im_start|>answer")
+    parser.add_argument("--overlength_str", type=str, default="\nFinal Answer:")
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--final_answer_length", type=int, default=100)
     args = parser.parse_args()
 
     if args.only_get_results:
@@ -70,10 +75,9 @@ def main():
         template = Template(tokenizer.chat_template)
 
     def call_model(prompts, model, max_new_tokens=50, print_example =False):
-        temperature = 0.5
         if print_example:
             print("Example:")
-            print(prompts[1])
+            print(prompts[0])
         preds = []
         if args.use_chat_template:
             prompts = [template.render(messages=[{"role": "user", "content": prom}],bos_token= tokenizer.bos_token,add_generation_prompt=True) for prom in prompts]
@@ -89,14 +93,56 @@ def main():
                     new_prompts.append(prompt[-args.max_tokens:])
             prompts = new_prompts
 
+        stop = None
         if args.force_think:
+            # https://github.com/simplescaling/s1
             prompts = [i+args.think_str for i in prompts]
+            stop = ["<|im_end|>", "<|im_start|>"]
+
         response = client.completions.create(
             model="default",
             prompt=prompts,
-            temperature=temperature, top_p=0.9, max_tokens=max_new_tokens
+            temperature=0.1, 
+            # top_p=0.9,
+            max_tokens=max_new_tokens - args.final_answer_length,
+            stop=stop,
+            seed=args.seed,
         )
         preds = [x.text for x in response.choices]
+        finish_reasons = [x.finish_reason for x in response.choices]
+        pred_lengths = []
+        if args.force_think:
+            # https://github.com/simplescaling/s1
+            # https://github.com/simplescaling/s1/blob/main/eval/lm-evaluation-harness/lm_eval/models/vllm_causallms.py
+            final_prompts = []
+            for prompt, pred, finish_reason in zip(prompts, preds, finish_reasons):
+                final_prompt = prompt + pred
+                pred_length = len(tokenizer.encode(pred, add_special_tokens=False))
+
+                if not final_prompt.endswith("\n"):
+                    final_prompt += "\n"
+                    pred_length += len(tokenizer.encode("\n", add_special_tokens=False))
+
+                final_prompt += args.answer_str
+                pred_length += len(tokenizer.encode(args.answer_str, add_special_tokens=False))
+
+                if finish_reason == "length":
+                    final_prompt += args.overlength_str
+                    pred_length += len(tokenizer.encode(args.overlength_str, add_special_tokens=False))
+
+                final_prompts.append(final_prompt)
+                pred_lengths.append(pred_length)
+
+            response = client.completions.create(
+                model="default",
+                prompt=final_prompts,
+                temperature=0.1, 
+                # top_p=0.9, 
+                max_tokens=max_new_tokens - max(pred_lengths),
+                stop=stop,
+                seed=args.seed,
+            )
+            preds = [pred + x.text for pred, x in zip(preds, response.choices)]
         postprocessed_preds = [postprocess_output(pred) for pred in preds]
         return postprocessed_preds, preds
 
