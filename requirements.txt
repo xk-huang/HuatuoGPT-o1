@@ -7,3 +7,4 @@ xformers
 vllm==0.6.4
 torchvision==0.20.1
 retrying
+omegaconf==2.3.0
